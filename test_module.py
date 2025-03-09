@@ -10,23 +10,18 @@ GPIO.setup(SER, GPIO.OUT)
 GPIO.setup(SRCLK, GPIO.OUT)
 GPIO.setup(RCLK, GPIO.OUT)
 
-
-def shift_out(byte):
-    """ Shift out 8-bit data to the 74HC595 shift register """
-    GPIO.output(RCLK, GPIO.LOW)
-    for i in range(8):
-        GPIO.output(SRCLK, GPIO.LOW)
-        GPIO.output(SER, (byte >> (7 - i)) & 1)
-        GPIO.output(SRCLK, GPIO.HIGH)
-    GPIO.output(RCLK, GPIO.HIGH)
-
-
-def test_all_segments():
-    shift_out(0b11111111)
-    time.sleep(5)
-    shift_out(0b00000000)
-
 try:
-    test_all_segments()
+    while True:
+        print("Toggling pins...")
+        GPIO.output(SER, GPIO.HIGH)
+        GPIO.output(SRCLK, GPIO.HIGH)
+        GPIO.output(RCLK, GPIO.HIGH)
+        time.sleep(0.5)
+
+        GPIO.output(SER, GPIO.LOW)
+        GPIO.output(SRCLK, GPIO.LOW)
+        GPIO.output(RCLK, GPIO.LOW)
+        time.sleep(0.5)
+
 finally:
     GPIO.cleanup()
